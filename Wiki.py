@@ -10,7 +10,7 @@ from mongoDBOperations import MongoDBManagement
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
-from transformers import BartForConditionalGeneration, BartTokenizer, BartConfig
+#from transformers import BartForConditionalGeneration, BartTokenizer, BartConfig
 class Wiki:
 
     def __init__(self, executable_path, chrome_options):
@@ -181,20 +181,20 @@ class Wiki:
             page = self.fetchPageContent(searchString)
             wikicontent = page.content
 
-            # Loading the model and tokenizer for bart-large-cnn
+            """# Loading the model and tokenizer for bart-large-cnn
             tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-cnn')
             model = BartForConditionalGeneration.from_pretrained('facebook/bart-large-cnn')
             inputs = tokenizer.batch_encode_plus([wikicontent], return_tensors='pt', truncation=True)
             summary_ids = model.generate(inputs['input_ids'], early_stopping=True)
             # Decoding and printing the summary
-            bart_summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+            bart_summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)"""
 
             images = self.fetchPageImages(page)
             references = self.fetchPageReferences(page)
 
             mongoClient = MongoDBManagement(username=username, password=password)
 
-            result = {  'summary': bart_summary,
+            result = {  'summary': page.summary,
                         'images': images,
                         'references': references
                         }
