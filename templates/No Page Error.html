@@ -22,19 +22,13 @@
 	<div id="notfound">
 		<div class="notfound">
 			<div class="notfound">
-				<h1 style="text-align: center">Oops! Disambigious Error</h1>
+				<h1 style="text-align: center" >Oops! Page Not Found</h1>
 			</div>
-		    <div> The Search String entered is ambigious and have the following suggestions. Please select one of the following and try again to get the summary: </div>
-            <div>
-                  <p>
-                      <ul>
-                            {% for thing in result %}
-                              <li>{{ thing }}</li>
-                            {% endfor %}
-                      </ul>
-                  </p>
-            </div>
-			<a href="/">Go To Homepage</a>
+			<br>
+			<br>
+		    <div style="text-align: center"> There is no wikipedia page for the entered string. Please enter a correct string and try again. </div>
+
+			<a href="/">Try Again</a>
 
 	</div>
     </div>

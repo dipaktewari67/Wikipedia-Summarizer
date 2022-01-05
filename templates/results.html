@@ -16,6 +16,7 @@
 </head>
 
 <body>
+
   <div class="table-users">
       <h2>
           <span> Summary </span>
@@ -32,7 +33,7 @@
           <p>
               <ul>
                     {% for thing in result['images'] %}
-                      <li>{{ thing }}</li>
+                      <img src={{thing}} style="width:100px;height:100px;"><li>{{ thing }}</li></img>
                     {% endfor %}
               </ul>
           </p>
@@ -44,7 +45,7 @@
           <p>
               <ul>
                     {% for thing in result['references'] %}
-                      <li>{{ thing }}</li>
+                      <a href={{thing}} ><li>{{ thing }}</li></a>
                     {% endfor %}
               </ul>
           </p>

@@ -10,7 +10,9 @@ from mongoDBOperations import MongoDBManagement
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
-#from transformers import BartForConditionalGeneration, BartTokenizer, BartConfig
+
+from transformers import BartForConditionalGeneration, BartTokenizer, BartConfig
+
 class Wiki:
 
     def __init__(self, executable_path, chrome_options):
@@ -135,21 +137,21 @@ class Wiki:
         locator = self.getLocatorsObject()
         self.openUrl("https://www.wikipedia.org/")
         search_box = self.findElementById(id=locator.getSearchBox()).send_keys(searchString,Keys.ENTER)
-        print("search box found")
+        #print("search box found")
         WebDriverWait(self.driver, 2)
 
         try:
             self.findElementByXpath(xpath=locator.getAmbigious())
-            print("Page is ambigious")
+            #print("Page is ambigious")
             self.closeDriver()
             return [True,self.getDisambiguatioin(searchString=searchString)]
         except NoSuchElementException as e:
-            print("Page is not ambigious")
+            #print("Page is not ambigious")
             self.closeDriver()
             return [False]
 
     def fetchPageContent(self,searchString):
-        print(searchString)
+        #print(searchString)
         try:
             wikipage = wikipedia.page(searchString, auto_suggest=False)
 
@@ -179,22 +181,14 @@ class Wiki:
         try:
 
             page = self.fetchPageContent(searchString)
-            wikicontent = page.content
-
-            """# Loading the model and tokenizer for bart-large-cnn
-            tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-cnn')
-            model = BartForConditionalGeneration.from_pretrained('facebook/bart-large-cnn')
-            inputs = tokenizer.batch_encode_plus([wikicontent], return_tensors='pt', truncation=True)
-            summary_ids = model.generate(inputs['input_ids'], early_stopping=True)
-            # Decoding and printing the summary
-            bart_summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)"""
+            summary = self.summarize(wiki=page.content)
 
             images = self.fetchPageImages(page)
             references = self.fetchPageReferences(page)
 
             mongoClient = MongoDBManagement(username=username, password=password)
 
-            result = {  'summary': page.summary,
+            result = {  'summary': summary,
                         'images': images,
                         'references': references
                         }
@@ -234,3 +228,18 @@ class Wiki:
             wikipedia.page(searchString,auto_suggest=False)
         except wikipedia.DisambiguationError as e:
             return e.options
+
+
+    def summarize(self,wiki):
+
+        # Loading the model and tokenizer for bart-large-cnn
+        tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-cnn')
+        model = BartForConditionalGeneration.from_pretrained('facebook/bart-large-cnn')
+
+        inputs = tokenizer.batch_encode_plus([wiki], return_tensors='pt', truncation=True)
+        summary_ids = model.generate(inputs['input_ids'], early_stopping=True)
+
+        # Decoding and printing the summary
+        bart_summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+
+        return bart_summary
