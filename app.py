@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, Response, url_for, redirect
+from flask_cors import CORS, cross_origin
 import pandas as pd
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
@@ -16,6 +17,7 @@ logger = getLog('Wikipedia.py')
 app = Flask(__name__)  # initialising the flask app with the name 'app'
 
 @app.route('/', methods=['POST', 'GET'])
+@cross_origin()
 def index():
     if request.method == 'POST':
             searchString = request.form['content']
@@ -31,7 +33,9 @@ def index():
                             mongoClient = MongoDBManagement(username=username, password=password)
                             if mongoClient.isCollectionPresent(collection_name=searchString, db_name=db_name):
                                 response = mongoClient.findAllRecords(db_name=db_name, collection_name=searchString)
-                                print("fetching from the database")
+                                #print("fetching from the database")
+                                logger.info("Information Already present in the Database")
+                                logger.info("Fetching from the database")
                                 reviews = [i for i in response]
                                 result = reviews[0]
                                 summary_obj.saveDataFrameToFile(file_name="static/summary_data.csv",
@@ -42,7 +46,9 @@ def index():
 
                             # fetching the information from the wikipedia
                             else:
-                                print('fetching from wikipedia')
+                                #print('fetching from wikipedia')
+                                logger.info("Information is not present in the database")
+                                logger.info("Fetching the information from the Wikipedia")
                                 result = summary_obj.createsummary(searchString=searchString, username=username, password=password, db_name = db_name)
                                 summary_obj.saveDataFrameToFile(file_name="static/summary_data.csv",
                                                                 dataframe=pd.DataFrame.from_dict(result, orient='index').transpose())
