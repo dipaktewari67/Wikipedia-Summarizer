@@ -234,9 +234,3 @@ class Wiki:
             wikipedia.page(searchString,auto_suggest=False)
         except wikipedia.DisambiguationError as e:
             return e.options
-
-    def getMainImage(self):
-        if(self.driver.findElement(By.xpath("(//a/img)[1]")).getAttribute("alt").equals("Page semi-protected")):
-			print("yes")
-        else:
-            print("no")
