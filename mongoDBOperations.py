@@ -15,6 +15,7 @@ class MongoDBManagement:
             # "mongodb+srv://dipak67000:<password>@cluster0.t1yjm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
             self.url = "mongodb+srv://dipak67000:Joblogin1@cluster0.t1yjm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority".format(
                 self.username, self.password)
+
             # self.url = 'localhost:27017'
         except Exception as e:
             raise Exception(f"(__init__): Something went wrong on initiation process\n" + str(e))

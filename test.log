@@ -1,2 +1,10 @@
 2022-01-05 20:05:31,658:INFO:Wikipedia.py:Information Already present in the Database
 2022-01-05 20:05:31,665:INFO:Wikipedia.py:Fetching from the database
+2022-01-05 20:19:39,655:INFO:Wikipedia.py:Information is not present in the database
+2022-01-05 20:19:39,658:INFO:Wikipedia.py:Fetching the information from the Wikipedia
+2022-01-05 20:24:52,942:INFO:Wikipedia.py:Information is not present in the database
+2022-01-05 20:24:52,945:INFO:Wikipedia.py:Fetching the information from the Wikipedia
+2022-01-05 20:56:53,402:INFO:Wikipedia.py:Information Already present in the Database
+2022-01-05 20:56:53,404:INFO:Wikipedia.py:Fetching from the database
+2022-01-05 20:57:39,872:INFO:Wikipedia.py:Information is not present in the database
+2022-01-05 20:57:39,875:INFO:Wikipedia.py:Fetching the information from the Wikipedia
